@@ -1,1 +1,1 @@
-{"voltage": 7, "current_r": 7, "current_s": 7, "current_t": 7, "temperature_r": 7, "temperature_s": 7, "temperature_t": 7, "battery_r": 7, "battery_s": 7, "battery_t": 7, "power": 7, "pf": 7, "alive": 2, "energy": 7, "Loop_name": "CHP-04"}
+{"voltage": 385, "current_r": 39, "temperature_r": 43, "temperature_s": 45, "temperature_t": 43, "battery_r": 2, "battery_s": 2, "battery_t": 2, "power": 20, "pf": 0.81, "alive": 1, "energy": 41277, "Loop_name": "CHP-04"}
