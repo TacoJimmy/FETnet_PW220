@@ -34,6 +34,8 @@ def PowerLoop():
 
 def getPowerLoop01(HOST_Addr, HOST_Port):
     
+    data = [[0]*24 for i in range(14)]
+    clamp_data = [0]*14
     PowerPayload = {}
     clamp=[{"voltage":{}},{"voltage":{}},{"voltage":{}},{"voltage":{}},{"voltage":{}},{"voltage":{}},
            {"voltage":{}},{"voltage":{}},{"voltage":{}},{"voltage":{}},{"voltage":{}},{"voltage":{}},
@@ -41,27 +43,34 @@ def getPowerLoop01(HOST_Addr, HOST_Port):
     try:
         master = modbus_tcp.TcpMaster(host=HOST_Addr,port=HOST_Port)
         master.set_timeout(5.0)
-        clamp_data = master.execute(1, cst.READ_HOLDING_REGISTERS, 0, 719)
+        for i in range(14):
+            clamp_data[i] = master.execute(1, cst.READ_HOLDING_REGISTERS, i*48, 48)
+        for j in range(14):
+            for i in range(24):
+                data[j][i] = ReadFloat((clamp_data[j][i*2],clamp_data[j][i*2+1]))
+
+
+
         #print (clamp_data)
         '''
         for i in range(27):
             clamp32[i] = ReadFloat((clamp_data[i*2+1], clamp_data[i*2]))
         '''
         for i in range(14):
-            clamp[i]["voltage"]=round(clamp_data[i*48+1])
-            clamp[i]["current_r"]=round(clamp_data[i*48+15])
-            clamp[i]["current_r"]=round(clamp_data[i*48+27])
-            clamp[i]["current_r"]=round(clamp_data[i*48+39])
-            clamp[i]["temperature_r"]=round(clamp_data[i*48+23])
-            clamp[i]["temperature_s"]=round(clamp_data[i*48+35])
-            clamp[i]["temperature_t"]=round(clamp_data[i*48+47])
+            clamp[i]["voltage"]=round(data[i][0])
+            clamp[i]["current_r"]=round(data[i][7])
+            clamp[i]["current_r"]=round(data[i][13])
+            clamp[i]["current_r"]=round(data[i][19])
+            clamp[i]["temperature_r"]=round(data[i][11])
+            clamp[i]["temperature_s"]=round(data[i][17])
+            clamp[i]["temperature_t"]=round(data[i][23])
             clamp[i]["battery_r"]=2
             clamp[i]["battery_s"]=2
             clamp[i]["battery_t"]=2
-            clamp[i]["power"]= round(clamp_data[i*48+3])
-            clamp[i]["pf"]= round(clamp_data[i*48+7])
+            clamp[i]["power"]= round(data[i][2])
+            clamp[i]["pf"]= round(data[i][3],2)
             clamp[i]["alive"]= 1
-            clamp[i]["energy"]= round(clamp_data[i*48+5])
+            clamp[i]["energy"]= round(data[i][4])
             
             
     except:
@@ -206,53 +215,69 @@ def getPowerLoop01(HOST_Addr, HOST_Port):
     
     return PowerPayload
 
+
+def GetPowerEnergy(HOST_Addr, HOST_Port):
+    
+    master = modbus_tcp.TcpMaster(host=HOST_Addr,port=HOST_Port)
+    master.set_timeout(5.0)
+    clamp_data = master.execute(1, cst.READ_HOLDING_REGISTERS, 681, 1)
+    power_engergy = clamp_data[0]
+            
+    return power_engergy
+
 def getPowerMainLoop01(HOST_Addr, HOST_Port):
     
+    data = [[0]*24 for i in range(2)]
+    clamp_data = [0]*2
     PowerPayload = {}
     clamp=[{"voltage":{}},{"voltage":{}}]
     try:
         master = modbus_tcp.TcpMaster(host=HOST_Addr,port=HOST_Port)
         master.set_timeout(5.0)
-        clamp_data = master.execute(1, cst.READ_HOLDING_REGISTERS, 673, 47)
-        #print (clamp_data)
-        '''
-        for i in range(27):
-            clamp32[i] = ReadFloat((clamp_data[i*2+1], clamp_data[i*2]))
-        '''
+        
+        
+        
         for i in range(1):
-            clamp[i]["voltage"]=round(clamp_data[0])
-            clamp[i]["current_r"]=round(clamp_data[14])
-            clamp[i]["current_r"]=round(clamp_data[26])
-            clamp[i]["current_r"]=round(clamp_data[38])
-            clamp[i]["temperature_r"]=round(clamp_data[22])
-            clamp[i]["temperature_s"]=round(clamp_data[34])
-            clamp[i]["temperature_t"]=round(clamp_data[46])
+            clamp_data[i] = master.execute(1, cst.READ_HOLDING_REGISTERS, 672, 48)
+        
+        for j in range(1):
+            for i in range(24):
+                data[j][i] = ReadFloat((clamp_data[0][i*2],clamp_data[0][i*2+1]))
+
+        for i in range(1):
+            clamp[i]["voltage"]=round(data[i][0])
+            clamp[i]["current_r"]=round(data[i][7])
+            clamp[i]["current_r"]=round(data[i][13])
+            clamp[i]["current_r"]=round(data[i][19])
+            clamp[i]["temperature_r"]="NA"
+            clamp[i]["temperature_s"]="NA"
+            clamp[i]["temperature_t"]="NA"
             clamp[i]["battery_r"]=2
             clamp[i]["battery_s"]=2
             clamp[i]["battery_t"]=2
-            clamp[i]["power"]= round(clamp_data[2])
-            clamp[i]["pf"]= round(clamp_data[6])
+            clamp[i]["power"]= round(data[i][2])
+            clamp[i]["pf"]= round(data[i][3],2)
             clamp[i]["alive"]= 1
-            clamp[i]["energy"]= round(clamp_data[4])
+            clamp[i]["energy"]= round(data[i][4])
             
             
     except:
-        j = 20
+        
         for i in range(1):
-            clamp[i]["voltage"]=j
-            clamp[i]["current_r"]=j
-            clamp[i]["current_s"]=j
-            clamp[i]["current_t"]=j
-            clamp[i]["temperature_r"]=j
-            clamp[i]["temperature_s"]=j
-            clamp[i]["temperature_t"]=j
-            clamp[i]["battery_r"]=j
-            clamp[i]["battery_s"]=j
-            clamp[i]["battery_t"]=j
-            clamp[i]["power"]= j
-            clamp[i]["pf"]= j
+            clamp[i]["voltage"]=0
+            clamp[i]["current_r"]=0
+            clamp[i]["current_s"]=0
+            clamp[i]["current_t"]=0
+            clamp[i]["temperature_r"]=0
+            clamp[i]["temperature_s"]=0
+            clamp[i]["temperature_t"]=0
+            clamp[i]["battery_r"]=0
+            clamp[i]["battery_s"]=0
+            clamp[i]["battery_t"]=0
+            clamp[i]["power"]= 0
+            clamp[i]["pf"]= 0
             clamp[i]["alive"]= 2
-            clamp[i]["energy"]= j
+            clamp[i]["energy"]= 0
     with open('static/data/mainloopname.json', 'r') as f:
         loop_name = json.load(f)
     f.close
@@ -275,6 +300,33 @@ def getPowerMainLoop01(HOST_Addr, HOST_Port):
     f.close
     
     return PowerPayload
+
+def getmodbustcp(HOST_Addr, HOST_Port):
+    data = [[0]*24 for i in range(14)]
+    clamp_data = [0]*14
+    PowerPayload = {}
+    clamp=[{"voltage":{}},{"voltage":{}}]
+    
+    master = modbus_tcp.TcpMaster(host=HOST_Addr,port=HOST_Port)
+    master.set_timeout(5.0)
+    
+    for i in range(14):
+            clamp_data[i] = master.execute(1, cst.READ_HOLDING_REGISTERS, i*48, 48)
+    
+    
+    for j in range(14):
+        for i in range(24):
+            data[j][i] = ReadFloat((clamp_data[0][i*2],clamp_data[0][i*2+1]))
+    
+    
+    voltage01 = round(data[0][0],1)
+    voltage02 = round(data[1][0],1)
+    
+    print (clamp_data[0][0])
+    print (clamp_data[1])
+    print (voltage01)
+    print (voltage02)
+
 '''
 def getPowerLoop02(HOST_Addr, HOST_Port, voltage, pf):
     
@@ -413,4 +465,6 @@ def power_count():
 '''    
     
 if __name__ == '__main__':
-    getPowerLoop01('192.168.1.10',502)
+    #print (getmodbustcp('192.168.1.51',1502))
+    print (getPowerLoop01('192.168.1.51',1502))
+    print (getPowerMainLoop01('192.168.1.51',1502))
