@@ -157,13 +157,19 @@ def IPC_Loop01():
         CHP_Power = subpower04["power"]+subpower05["power"]+subpower06["power"]+subpower08["power"]+subpower09["power"]
         CWP_Power = subpower10["power"]+subpower11["power"]+subpower12["power"]+subpower13["power"]+subpower14["power"]
         
+        CT_energy = subpower01["energy"]+subpower02["energy"]+subpower03["energy"]+subpower07["energy"]
+        CHP_energy = subpower04["energy"]+subpower05["energy"]+subpower06["energy"]+subpower08["energy"]+subpower09["energy"]
+        CWP_energy = subpower10["energy"]+subpower11["energy"]+subpower12["energy"]+subpower13["energy"]+subpower14["energy"]
         
         clamp[0]["power"] = mainpower01["power"]
         clamp[0]["CT_Power"] = CT_Power
+        clamp[0]["CT_energy"] = CT_energy
         clamp[0]["CT_Power_p"] = round(CT_Power / mainpower01["power"],1)
         clamp[0]["CHP_Power"] = CHP_Power
+        clamp[0]["CHP_energy"] = CHP_energy
         clamp[0]["CHP_Power_p"] = CHP_Power / mainpower01["power"]
         clamp[0]["CWP_Power"] = CWP_Power
+        clamp[0]["CWP_energy"] = CWP_energy
         clamp[0]["CWP_Power_p"] = CWP_Power / mainpower01["power"]
         
     
