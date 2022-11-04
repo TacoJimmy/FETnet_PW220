@@ -1,1 +1,1 @@
-{"voltage": 2, "current_r": 2, "current_s": 2, "current_t": 2, "temperature_r": 2, "temperature_s": 2, "temperature_t": 2, "battery_r": 2, "battery_s": 2, "battery_t": 2, "power": 2, "pf": 2, "alive": 2, "power_kwh": 3.589999999999998, "energy": 3.589999999999998, "Loop_name": "F4NR1_SocketPower"}
+{"voltage": 5, "current_r": 5, "current_s": 5, "current_t": 5, "temperature_r": 5, "temperature_s": 5, "temperature_t": 5, "battery_r": 5, "battery_s": 5, "battery_t": 5, "power": 5, "pf": 5, "alive": 2, "energy": 5, "Loop_name": "CHP-03"}
