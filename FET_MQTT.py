@@ -5,7 +5,7 @@ import ssl
 import paho.mqtt.client as mqtt
 import time
 import FET_modbustcp
-import FET_modbusrtu
+
 
 def PowerLoop():
     with open('static/data/PowerMeter.json', 'r') as f:
@@ -19,7 +19,7 @@ def ReadMqttInfor():
     f.close
     return data
 
-def MqttSend(mod_payload):
+def MqttSend(mod_payload,loop):
     Mqttinfor = ReadMqttInfor()
     try:
         client = mqtt.Client('', True, None, mqtt.MQTTv31)
@@ -29,20 +29,19 @@ def MqttSend(mod_payload):
         client.connect(Mqttinfor['appInfo']['MQTT_url'], Mqttinfor['appInfo']['MQTT_Port'], 60)
         client.loop_start()
         time.sleep(1)
-        data02 = client.on_connect
-        data03 = client.publish(Mqttinfor['appInfo']['MQTT_topic'],json.dumps(mod_payload[0]))
+        client.on_connect
+        
+        for i in range(loop):
+            data03 = client.publish(Mqttinfor['appInfo']['MQTT_topic'],json.dumps(mod_payload[i]))
         time.sleep(1)
-        data03 = client.publish(Mqttinfor['appInfo']['MQTT_topic'],json.dumps(mod_payload[1]))
-        time.sleep(1)
-        data03 = client.publish(Mqttinfor['appInfo']['MQTT_topic'],json.dumps(mod_payload[2]))
-        time.sleep(1)
+        
         client.loop_stop()
         client.disconnect()
         time.sleep(1)
     except:
         print ('error')
         return ('error')
-
+'''
 def MqttMainSend(mod_payload):
     Mqttinfor = ReadMqttInfor()
     try:
@@ -87,184 +86,88 @@ def MqttACSend(mod_payload):
         print ('error')
         return ('error')
 
-def Mainloop01Cal():
-    try:
-        clamp=[{"voltage":{}},{"voltage":{}},{"voltage":{}}]
-        PowerPayload = {}
-        with open('static/data/PowerSubLoop03.json', 'r') as f:
-            F4NR2_data = json.load(f)
-        f.close
-        with open('static/data/PowerSubLoop04.json', 'r') as f:
-            F4NL2_data = json.load(f)
-        f.close
-        with open('static/data/PowerSubLoop05.json', 'r') as f:
-            F4EL2_data = json.load(f)
-        f.close
-        with open('static/data/PowerSubLoop06.json', 'r') as f:
-            F4EL1_data = json.load(f)
-        f.close
-        with open('static/data/PowerSubLoop07.json', 'r') as f:
-            F4NL1_data = json.load(f)
-        f.close
-        with open('static/data/PowerSubLoop08.json', 'r') as f:
-            F4NR1_data = json.load(f)
-        f.close
-        clamp[0]["voltage"] = F4NR2_data["voltage"]
-        clamp[0]["current_r"]= F4NR2_data["current_r"] + F4NL2_data["current_r"] + F4NL1_data["current_r"]
-        clamp[0]["current_s"]= F4NR2_data["current_s"] + F4NL2_data["current_s"] + F4NL1_data["current_s"]
-        clamp[0]["current_t"]= F4NR2_data["current_t"] + F4NL2_data["current_t"] + F4NL1_data["current_t"]
-        clamp[0]["temperature_r"]= 30
-        clamp[0]["temperature_s"]= 30
-        clamp[0]["temperature_t"]= 30
-        clamp[0]["battery_r"]= 2
-        clamp[0]["battery_s"]= 2
-        clamp[0]["battery_t"]= 2
-        clamp[0]["power"]= F4NR2_data["power"] + F4NL2_data["power"] + F4NL1_data["power"]
-        clamp[0]["pf"]= F4NR2_data["pf"]
-        clamp[0]["alive"]= 1   
-        
-        
-    except:
-        clamp[0]["alive"]= 0
-        
-    clamp[0]["Loop_name"]= "F4NP1_常用總電源"
-    
-    PowerPayload[0] = [{"access_token": "WImETF1BotX8l1xIkZ3K",
-             "app": "ems_demo_fet",
-             "type": "3P3WMETER",
-             "data": [{"values":clamp[0]}]}]
-    
-    with open('static/data/PowerMainLoop01.json', 'w') as f:
-        json.dump(PowerPayload[0][0]["data"][0]["values"], f)
-    f.close
-    
-    return PowerPayload
-    
-def Mainloop02Cal():
-    try:
-        clamp=[{"voltage":{}},{"voltage":{}},{"voltage":{}}]
-        PowerPayload = {}
-        with open('static/data/PowerSubLoop03.json', 'r') as f:
-            F4NR2_data = json.load(f)
-        f.close
-        with open('static/data/PowerSubLoop04.json', 'r') as f:
-            F4NL2_data = json.load(f)
-        f.close
-        with open('static/data/PowerSubLoop05.json', 'r') as f:
-            F4EL2_data = json.load(f)
-        f.close
-        with open('static/data/PowerSubLoop06.json', 'r') as f:
-            F4EL1_data = json.load(f)
-        f.close
-        with open('static/data/PowerSubLoop07.json', 'r') as f:
-            F4NL1_data = json.load(f)
-        f.close
-        with open('static/data/PowerSubLoop08.json', 'r') as f:
-            F4NR1_data = json.load(f)
-        f.close
-        clamp[0]["voltage"] = F4EL1_data["voltage"]
-        clamp[0]["current_r"]= F4EL1_data["current_r"] + F4EL2_data["current_r"]
-        clamp[0]["current_s"]= F4EL1_data["current_s"] + F4EL2_data["current_s"]
-        clamp[0]["current_t"]= F4EL1_data["current_t"] + F4EL2_data["current_t"]
-        clamp[0]["temperature_r"]= 30
-        clamp[0]["temperature_s"]= 30
-        clamp[0]["temperature_t"]= 30
-        clamp[0]["battery_r"]= 2
-        clamp[0]["battery_s"]= 2
-        clamp[0]["battery_t"]= 2
-        clamp[0]["power"]= F4EL1_data["power"] + F4EL2_data["power"] 
-        clamp[0]["pf"]= F4EL1_data["pf"]
-        clamp[0]["alive"]= 1   
-        
-        
-    except:
-        clamp[0]["alive"]= 0
-        
-    clamp[0]["Loop_name"]= "F4NE1_備用總電源"
-    
-    PowerPayload[0] = [{"access_token": "wFeXyzMjZvTB4hhZ6a1c",
-             "app": "ems_demo_fet",
-             "type": "3P3WMETER",
-             "data": [{"values":clamp[0]}]}]
-    
-    with open('static/data/PowerMainLoop02.json', 'w') as f:
-        json.dump(PowerPayload[0][0]["data"][0]["values"], f)
-    f.close
-    
-    return PowerPayload
-    
+
+'''
 def MqttPublish():
-    MainLoop01 = FET_modbusrtu.read_Main_PowerMeter('/dev/ttyS1',1,1)
-    MainLoop02 = FET_modbusrtu.read_Main_PowerMeter('/dev/ttyS1',2,1)
-    MainPayload = FET_modbusrtu.get_MainPayLoad(MainLoop01,MainLoop02)
-    MqttMainSend(MainPayload)
-    SubACLoop01 = FET_modbusrtu.read_3p3w_meter('/dev/ttyS1',3,1)
-    SubACLoop02 = FET_modbusrtu.read_3p3w_meter('/dev/ttyS1',4,1)
-    ACPayload = FET_modbusrtu.get_ACPayLoad(SubACLoop01,SubACLoop02)
-    MqttACSend(ACPayload)
-    SubLoop01 = FET_modbustcp.getPowerLoop01('192.168.1.10',502,MainLoop01[0],MainLoop01[5])
-    MqttSend(SubLoop01)
-    SubLoop02 = FET_modbustcp.getPowerLoop02('192.168.1.11',502,MainLoop01[0],MainLoop01[5])
-    MqttSend(SubLoop02)
-    
-    
-    '''
-    try:
-        #PowerInfor = PowerLoop()
-        
-        MainLoop01 = FET_modbusrtu.read_Main_PowerMeter('/dev/ttyS1',1,1)
-        MainLoop02 = FET_modbusrtu.read_Main_PowerMeter('/dev/ttyS1',2,1)
-        MainPayload = FET_modbusrtu.get_MainPayLoad(MainLoop01,MainLoop02)
-        #print(MainPayload)
-        MqttMainSend(MainPayload)
-        
-        SubACLoop01 = FET_modbusrtu.read_3p3w_meter('/dev/ttyS1',3,1)
-        #print(SubACLoop01)
-        SubACLoop02 = FET_modbusrtu.read_3p3w_meter('/dev/ttyS1',4,1)
-        #print(SubACLoop02)
-        ACPayload = FET_modbusrtu.get_ACPayLoad(SubACLoop01,SubACLoop02)
-        #print(ACPayload)
-        MqttACSend(ACPayload)
-        
-        SubLoop01 = FET_modbustcp.getPowerLoop01('192.168.1.10',502,MainLoop01[0],MainLoop01[5])
-        MqttSend(SubLoop01)
-        SubLoop02 = FET_modbustcp.getPowerLoop02('192.168.1.11',502,MainLoop01[0],MainLoop01[5])
-        MqttSend(SubLoop02)
-        
-        #Mainloop01Cal()
-        #Mainloop02Cal()
-        
-        
-        
-        
-               
-        print('ok')
-        return ('OK')
-        
-    except:
-        print ('error')
-        return ('error')
-    '''
-def IPC_Data():
+    SubLoop01 = FET_modbustcp.getPowerLoop01('192.168.1.10',502)
+    MqttSend(SubLoop01,14)
+    MainLoop01 = FET_modbustcp.getPowerMainLoop01('192.168.1.10', 502)
+    MqttSend(MainLoop01,1)
+    MainLoop = IPC_Loop01()
+    MqttSend(MainLoop,1)
+
+def IPC_Loop01():
     PowerPayload ={}
-    clamp=[{"voltage":{}},{"voltage":{}},{"voltage":{}}]
+    clamp=[{"voltage":{}},{"voltage":{}},{"voltage":{}},
+           {"voltage":{}},{"voltage":{}},{"voltage":{}},
+           {"voltage":{}},{"voltage":{}},{"voltage":{}},
+           {"voltage":{}},{"voltage":{}},{"voltage":{}},
+           {"voltage":{}},{"voltage":{}}]
     try:
         
         
-        with open('static/data/PowerMainLoop01.json', 'r') as a:
-            mainpower01 = json.load(a)
+        with open('static/data/PowerSubLoop01.json', 'r') as a:
+            subpower01 = json.load(a)
         a.close
-        with open('static/data/PowerMainLoop02.json', 'r') as b:
-            mainpower02 = json.load(b)
+        with open('static/data/PowerSubLoop02.json', 'r') as b:
+            subpower02 = json.load(b)
+        b.close
+        with open('static/data/PowerSubLoop03.json', 'r') as a:
+            subpower03 = json.load(a)
+        a.close
+        with open('static/data/PowerSubLoop04.json', 'r') as b:
+            subpower04 = json.load(b)
+        b.close
+        with open('static/data/PowerSubLoop05.json', 'r') as a:
+            subpower05 = json.load(a)
+        a.close
+        with open('static/data/PowerSubLoop06.json', 'r') as b:
+            subpower06 = json.load(b)
+        b.close
+        with open('static/data/PowerSubLoop07.json', 'r') as a:
+            subpower07 = json.load(a)
+        a.close
+        with open('static/data/PowerSubLoop08.json', 'r') as b:
+            subpower08 = json.load(b)
+        b.close
+        with open('static/data/PowerSubLoop09.json', 'r') as a:
+            subpower09 = json.load(a)
+        a.close
+        with open('static/data/PowerSubLoop10.json', 'r') as b:
+            subpower10 = json.load(b)
+        b.close
+        with open('static/data/PowerSubLoop11.json', 'r') as a:
+            subpower11 = json.load(a)
+        a.close
+        with open('static/data/PowerSubLoop12.json', 'r') as b:
+            subpower12 = json.load(b)
+        b.close
+        with open('static/data/PowerSubLoop13.json', 'r') as a:
+            subpower13 = json.load(a)
+        a.close
+        with open('static/data/PowerSubLoop14.json', 'r') as b:
+            subpower14 = json.load(b)
         b.close
         
+        with open('static/data/PowerMainLoop01.json', 'r') as b:
+            mainpower01 = json.load(b)
+        b.close
         
-        TotalMainPower = float(mainpower01["power"])+float(mainpower02["power"])
-        TotalDM = float(mainpower01["dm"])+float(mainpower02["dm"])
-        clamp[0]["Main_Power"] = TotalMainPower
-        clamp[0]["dm"] = TotalDM
+        CT_Power = subpower01["power"]+subpower02["power"]+subpower03["power"]+subpower07["power"]
+        CHP_Power = subpower04["power"]+subpower05["power"]+subpower06["power"]+subpower08["power"]+subpower09["power"]
+        CWP_Power = subpower10["power"]+subpower11["power"]+subpower12["power"]+subpower13["power"]+subpower14["power"]
+        
+        
+        clamp[0]["power"] = mainpower01["power"]
+        clamp[0]["CT_Power"] = CT_Power
+        clamp[0]["CT_Power_p"] = round(CT_Power / mainpower01["power"],1)
+        clamp[0]["CHP_Power"] = CHP_Power
+        clamp[0]["CHP_Power_p"] = CHP_Power / mainpower01["power"]
+        clamp[0]["CWP_Power"] = CWP_Power
+        clamp[0]["CWP_Power_p"] = CWP_Power / mainpower01["power"]
+        
     
-        PowerPayload[0] = [{"access_token": "nV5IbdeFN3I2Wjud96d8",
+        PowerPayload[0] = [{"access_token": "GkWtbPJ31C4rca1OVIVm",
              "app": "ems_demo_fet",
              "type": "3P3WMETER",
              "data": [{"values":clamp[0]}]}]
@@ -272,9 +175,14 @@ def IPC_Data():
         with open('static/data/ipc.json', 'w') as f:
             json.dump(PowerPayload[0][0]["data"][0]["values"], f)
         f.close
-        
+        print (PowerPayload)
+        return PowerPayload
     except:
         pass
+    
+    
+'''
+
 
 def Pub_infor():
     try:
@@ -303,9 +211,27 @@ def Pub_infor():
         return ('OK')
     except:
         return ('error')
-        
+'''
+   
 if __name__ == '__main__':
     while True:
         #PowerLoop()
-        MqttPublish()
-        time.sleep(60)
+        PowerPayload ={}
+        clamp=[{"voltage":{}},{"voltage":{}},{"voltage":{}},
+           {"voltage":{}},{"voltage":{}},{"voltage":{}},
+           {"voltage":{}},{"voltage":{}},{"voltage":{}},
+           {"voltage":{}},{"voltage":{}},{"voltage":{}},
+           {"voltage":{}},{"voltage":{}}]
+        
+        with open('static/data/PowerSubLoop14.json', 'r') as a:
+            subpower01 = json.load(a)
+        a.close
+        with open('static/data/PowerMainLoop01.json', 'r') as a:
+            mainpower01 = json.load(a)
+        a.close
+        
+        clamp[0]["power"] = mainpower01["power"]
+        clamp[0]["power_loop01"] = subpower01["power"]
+        clamp[0]["power_loop01_p"] = round(subpower01["power"] / mainpower01["power"]*100,1)
+        print (clamp[0])
+        time.sleep(10)
