@@ -1,1 +1,1 @@
-{"voltage": 0, "current_r": 0, "current_s": 0, "current_t": 0, "temperature_r": 0, "temperature_s": 0, "temperature_t": 0, "battery_r": 0, "battery_s": 0, "battery_t": 0, "power": 0, "pf": 0, "alive": 2, "power_kwh": 2.866666666666668, "energy": 2.866666666666668, "Loop_name": "F4EL1_BackupPower"}
+{"voltage": 7, "current_r": 7, "current_s": 7, "current_t": 7, "temperature_r": 7, "temperature_s": 7, "temperature_t": 7, "battery_r": 7, "battery_s": 7, "battery_t": 7, "power": 7, "pf": 7, "alive": 2, "energy": 7, "Loop_name": "CHP-04"}
