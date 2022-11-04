@@ -2,27 +2,21 @@
 import codecs
 import json
 import ssl
-import paho.mqtt.client as mqtt
+import csv
 import time
 
-def count_dm():
+def save_csv():
     
-    energy_now = 20
+    with open('static/data/PowerSubLoop01.json', 'r') as a:
+        subpower01 = json.load(a)
+    a.close
     
-    with open('static/data/power_dm.json', 'r') as f:
-        power_energy_last = json.load(f)
-    f.close
-    
-    dm_now = energy_now - power_energy_last["power_energy"]
-    Payload = {"power_energy":energy_now, "power_dm":dm_now}
-    
-    with open('static/data/power_dm.json', 'w') as f:
-            json.dump(Payload, f)
-    f.close
-
-    return Payload
+    with open('static/data/PowerSubLoop01.csv', 'a', newline="") as csvfile:
+        json.dump(subpower01, csvfile)
+    csvfile.close
 
 if __name__ == '__main__':
     while True:
-      print (count_dm())  
-      time.sleep(5)
+        save_csv()
+        print("ok")
+        time.sleep(5)
