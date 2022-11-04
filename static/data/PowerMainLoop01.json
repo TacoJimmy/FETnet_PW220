@@ -1,1 +1,1 @@
-{"voltage": 20, "current_r": 20, "current_s": 20, "current_t": 20, "temperature_r": 20, "temperature_s": 20, "temperature_t": 20, "battery_r": 20, "battery_s": 20, "battery_t": 20, "power": 20, "pf": 20, "alive": 2, "energy": 20, "Loop_name": "CT-01"}
+{"voltage": 385, "current_r": 133, "temperature_r": "NA", "temperature_s": "NA", "temperature_t": "NA", "battery_r": 2, "battery_s": 2, "battery_t": 2, "power": 94, "pf": 0.94, "alive": 1, "energy": 226414, "Loop_name": "CT-01"}
