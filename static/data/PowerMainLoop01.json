@@ -1,1 +1,1 @@
-{"voltage": 0, "current_r": 0, "current_s": 0, "current_t": 0, "temperature_r": 0, "temperature_s": 0, "temperature_t": 0, "battery_r": 0, "battery_s": 0, "battery_t": 0, "power": 0, "pf": 0, "alive": 2, "dm": 2, "Loop_name": "F4NP1_normalpower"}
+{"voltage": 20, "current_r": 20, "current_s": 20, "current_t": 20, "temperature_r": 20, "temperature_s": 20, "temperature_t": 20, "battery_r": 20, "battery_s": 20, "battery_t": 20, "power": 20, "pf": 20, "alive": 2, "energy": 20, "Loop_name": "CT-01"}
