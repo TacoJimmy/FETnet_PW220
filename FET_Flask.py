@@ -6,7 +6,6 @@ import time
 from flask import Flask
 from flask_apscheduler import APScheduler
 import FET_MQTT
-import FET_modbusrtu
 import FET_modbustcp
 from livereload import Server
 app = Flask(__name__)
@@ -19,8 +18,8 @@ class Config(object):
             'func': '__main__:publish_PowerMeter',
             'args': (1, 2),   
             'trigger': 'interval',
-            #'minutes': 1
-            'seconds': 20
+            'minutes': 1
+            #'seconds': 10
             
         },
         {
@@ -150,6 +149,34 @@ def powersubloop10Message():
             data = json.load(f)
         f.close
     return jsonify(data)
+@app.route('/powermanage/subloop11', methods=['GET'])
+def powersubloop11Message():
+    if request.method == "GET":
+        with open('static/data/PowerSubLoop11.json', 'r') as f:
+            data = json.load(f)
+        f.close
+    return jsonify(data)
+@app.route('/powermanage/subloop12', methods=['GET'])
+def powersubloop12Message():
+    if request.method == "GET":
+        with open('static/data/PowerSubLoop12.json', 'r') as f:
+            data = json.load(f)
+        f.close
+    return jsonify(data)
+@app.route('/powermanage/subloop13', methods=['GET'])
+def powersubloop13Message():
+    if request.method == "GET":
+        with open('static/data/PowerSubLoop13.json', 'r') as f:
+            data = json.load(f)
+        f.close
+    return jsonify(data)
+@app.route('/powermanage/subloop14', methods=['GET'])
+def powersubloop14Message():
+    if request.method == "GET":
+        with open('static/data/PowerSubLoop14.json', 'r') as f:
+            data = json.load(f)
+        f.close
+    return jsonify(data)
 
 
 @app.route('/setup/message', methods=['GET'])
@@ -250,16 +277,24 @@ def setDataMqtt01():
 def publish_PowerMeter(a, b):
     
     FET_MQTT.MqttPublish()
-    FET_MQTT.IPC_Data()
+    print("ok")
     
 def read_com1(a, b):
     
-    try:
-        FET_modbustcp.power_count()   
-    except:
-        pass
+    energy_now = FET_modbustcp.GetPowerEnergy('192.168.1.10',502)
     
+    with open('static/data/power_dm.json', 'r') as f:
+        power_energy_last = json.load(f)
+    f.close
     
+    dm_now = energy_now - power_energy_last["power_energy"]
+    Payload = {"power_energy":energy_now, "power_dm":dm_now}
+    
+    with open('static/data/power_dm.json', 'w') as f:
+            json.dump(Payload, f)
+    f.close
+
+    return Payload
 if __name__ == '__main__':
     
     app.config.from_object(Config())
@@ -269,10 +304,6 @@ if __name__ == '__main__':
     
     live_server = Server(app.wsgi_app)
     live_server.watch('static/*.stylus', 'make static')
-    #live_server.watch('**/*.*')
-    #live_server.serve(host='0.0.0.0',open_url_delay=True)
     live_server.serve(open_url=False, open_url_delay=None, live_css=False, host='0.0.0.0', debug=None, restart_delay=100)
-        
-    #app.run('0.0.0.0', debug=True)
     
     
