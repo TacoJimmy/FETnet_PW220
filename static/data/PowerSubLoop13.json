@@ -1,1 +1,1 @@
-{"voltage": 12, "current_r": 12, "current_s": 12, "current_t": 12, "temperature_r": 12, "temperature_s": 12, "temperature_t": 12, "battery_r": 12, "battery_s": 12, "battery_t": 12, "power": 12, "pf": 12, "alive": 2, "energy": 12, "Loop_name": "CWP-04"}
+{"voltage": 385, "current_r": 0, "temperature_r": 31, "temperature_s": 30, "temperature_t": 31, "battery_r": 2, "battery_s": 2, "battery_t": 2, "power": 0, "pf": 0.0, "alive": 1, "energy": 0, "Loop_name": "CWP-04"}
