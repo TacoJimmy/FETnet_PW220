@@ -32,37 +32,40 @@ def PowerLoop():
     f.close
     return data
 
-def getPowerLoop01(HOST_Addr, HOST_Port, voltage, pf):
+def getPowerLoop01(HOST_Addr, HOST_Port):
     
-    clamp32 = {}
     PowerPayload = {}
-    clamp=[{"voltage":{}},{"voltage":{}},{"voltage":{}}]
+    clamp=[{"voltage":{}},{"voltage":{}},{"voltage":{}},{"voltage":{}},{"voltage":{}},{"voltage":{}},
+           {"voltage":{}},{"voltage":{}},{"voltage":{}},{"voltage":{}},{"voltage":{}},{"voltage":{}},
+           {"voltage":{}},{"voltage":{}},]
     try:
         master = modbus_tcp.TcpMaster(host=HOST_Addr,port=HOST_Port)
         master.set_timeout(5.0)
-        clamp_data = master.execute(1, cst.READ_HOLDING_REGISTERS, 0, 54)
+        clamp_data = master.execute(1, cst.READ_HOLDING_REGISTERS, 0, 719)
         #print (clamp_data)
+        '''
         for i in range(27):
             clamp32[i] = ReadFloat((clamp_data[i*2+1], clamp_data[i*2]))
-    
-        for i in range(3):
-            clamp[i]["voltage"]=voltage
-            clamp[i]["current_r"]=round(clamp32[i*9])
-            clamp[i]["current_s"]=round(clamp32[i*9+3])
-            clamp[i]["current_t"]=round(clamp32[i*9+6])
-            clamp[i]["temperature_r"]=clamp32[i*9+1]
-            clamp[i]["temperature_s"]=clamp32[i*9+4]
-            clamp[i]["temperature_t"]=clamp32[i*9+7]
-            clamp[i]["battery_r"]=clamp32[i*9+2]
-            clamp[i]["battery_s"]=clamp32[i*9+5]
-            clamp[i]["battery_t"]=clamp32[i*9+8]
-            clamp[i]["power"]= round((380*1.7*(clamp32[i*9]+clamp32[i*9+3]+clamp32[i*9+6]))/1000,1)
-            clamp[i]["pf"]= pf
+        '''
+        for i in range(14):
+            clamp[i]["voltage"]=round(clamp_data[i*48+1])
+            clamp[i]["current_r"]=round(clamp_data[i*48+15])
+            clamp[i]["current_r"]=round(clamp_data[i*48+27])
+            clamp[i]["current_r"]=round(clamp_data[i*48+39])
+            clamp[i]["temperature_r"]=round(clamp_data[i*48+23])
+            clamp[i]["temperature_s"]=round(clamp_data[i*48+35])
+            clamp[i]["temperature_t"]=round(clamp_data[i*48+47])
+            clamp[i]["battery_r"]=2
+            clamp[i]["battery_s"]=2
+            clamp[i]["battery_t"]=2
+            clamp[i]["power"]= round(clamp_data[i*48+3])
+            clamp[i]["pf"]= round(clamp_data[i*48+7])
             clamp[i]["alive"]= 1
-            payload_data = [{"values":clamp[i]}]
+            clamp[i]["energy"]= round(clamp_data[i*48+5])
+            
             
     except:
-        for i in range(3):
+        for i in range(14):
             clamp[i]["voltage"]=i
             clamp[i]["current_r"]=i
             clamp[i]["current_s"]=i
@@ -76,57 +79,203 @@ def getPowerLoop01(HOST_Addr, HOST_Port, voltage, pf):
             clamp[i]["power"]= i
             clamp[i]["pf"]= i
             clamp[i]["alive"]= 2
-            payload_data = [{"values":clamp[i]}]
-    if clamp[1]["alive"] == 1 :
-        clamp[1]["current_r"]=clamp[1]["current_r"]-clamp[0]["current_r"]
-        clamp[1]["current_s"]=clamp[1]["current_s"]-clamp[0]["current_s"]
-        clamp[1]["current_t"]=clamp[1]["current_t"]-clamp[0]["current_t"]
-        clamp[1]["power"]= clamp[1]["power"]-clamp[0]["power"]
-    
-    with open('static/data/PowerLoop01.json', 'r') as f:
-        power_kwh01 = json.load(f)
+            clamp[i]["energy"]= i
+    with open('static/data/loopname.json', 'r') as f:
+        loop_name = json.load(f)
     f.close
-    clamp[0]["power_kwh"] = power_kwh01["power03_kwh"]
-    clamp[1]["power_kwh"] = power_kwh01["power04_kwh"]
-    clamp[2]["power_kwh"] = power_kwh01["power05_kwh"]
     
-    clamp[0]["energy"] = power_kwh01["power03_kwh"]
-    clamp[1]["energy"] = power_kwh01["power04_kwh"]
-    clamp[2]["energy"] = power_kwh01["power05_kwh"]
+    clamp[0]["Loop_name"] = loop_name["loop01"]
+    clamp[1]["Loop_name"] = loop_name["loop02"]
+    clamp[2]["Loop_name"] = loop_name["loop03"]
+    clamp[3]["Loop_name"] = loop_name["loop04"]
+    clamp[4]["Loop_name"] = loop_name["loop05"]
+    clamp[5]["Loop_name"] = loop_name["loop06"]
+    clamp[6]["Loop_name"] = loop_name["loop07"]
+    clamp[7]["Loop_name"] = loop_name["loop08"]
+    clamp[8]["Loop_name"] = loop_name["loop09"]
+    clamp[9]["Loop_name"] = loop_name["loop10"]
+    clamp[10]["Loop_name"] = loop_name["loop11"]
+    clamp[11]["Loop_name"] = loop_name["loop12"]
+    clamp[12]["Loop_name"] = loop_name["loop13"]
+    clamp[13]["Loop_name"] = loop_name["loop14"]
     
-    clamp[0]["Loop_name"] = "F4NR2_SocketPower"
-    clamp[1]["Loop_name"] = "F4NL2_LightPower"
-    clamp[2]["Loop_name"] = "F4EL2_BackupPower"
+    with open('static/data/looptoken.json', 'r') as f:
+        loop_token = json.load(f)
+    f.close
     
     
-    
-    PowerPayload[0] = [{"access_token": "QIki1lbgrdu9dRcCM4rs",
+    PowerPayload[0] = [{"access_token": loop_token["loop01"],
              "app": "ems_demo_fet",
              "type": "3P3WMETER",
              "data": [{"values":clamp[0]}]}]
-    PowerPayload[1] = [{"access_token": "khO4exKzLAkZRr9VdrJx",
+    PowerPayload[1] = [{"access_token": loop_token["loop02"],
              "app": "ems_demo_fet",
              "type": "3P3WMETER",
              "data": [{"values":clamp[1]}]}]
-    PowerPayload[2] = [{"access_token": "8G60nMefNfBUeoY7ebm6",
+    PowerPayload[2] = [{"access_token": loop_token["loop03"],
              "app": "ems_demo_fet",
              "type": "3P3WMETER",
              "data": [{"values":clamp[2]}]}]
+    PowerPayload[3] = [{"access_token": loop_token["loop04"],
+             "app": "ems_demo_fet",
+             "type": "3P3WMETER",
+             "data": [{"values":clamp[3]}]}]
+    PowerPayload[4] = [{"access_token": loop_token["loop05"],
+             "app": "ems_demo_fet",
+             "type": "3P3WMETER",
+             "data": [{"values":clamp[4]}]}]
+    PowerPayload[5] = [{"access_token": loop_token["loop06"],
+             "app": "ems_demo_fet",
+             "type": "3P3WMETER",
+             "data": [{"values":clamp[5]}]}]
+    PowerPayload[6] = [{"access_token": loop_token["loop07"],
+             "app": "ems_demo_fet",
+             "type": "3P3WMETER",
+             "data": [{"values":clamp[6]}]}]
+    PowerPayload[7] = [{"access_token": loop_token["loop08"],
+             "app": "ems_demo_fet",
+             "type": "3P3WMETER",
+             "data": [{"values":clamp[7]}]}]
+    PowerPayload[8] = [{"access_token": loop_token["loop09"],
+             "app": "ems_demo_fet",
+             "type": "3P3WMETER",
+             "data": [{"values":clamp[8]}]}]
+    PowerPayload[9] = [{"access_token": loop_token["loop10"],
+             "app": "ems_demo_fet",
+             "type": "3P3WMETER",
+             "data": [{"values":clamp[9]}]}]
+    PowerPayload[10] = [{"access_token": loop_token["loop11"],
+             "app": "ems_demo_fet",
+             "type": "3P3WMETER",
+             "data": [{"values":clamp[10]}]}]
+    PowerPayload[11] = [{"access_token": loop_token["loop12"],
+             "app": "ems_demo_fet",
+             "type": "3P3WMETER",
+             "data": [{"values":clamp[11]}]}]
+    PowerPayload[12] = [{"access_token": loop_token["loop13"],
+             "app": "ems_demo_fet",
+             "type": "3P3WMETER",
+             "data": [{"values":clamp[12]}]}]
+    PowerPayload[13] = [{"access_token": loop_token["loop14"],
+             "app": "ems_demo_fet",
+             "type": "3P3WMETER",
+             "data": [{"values":clamp[13]}]}]
     
-    with open('static/data/PowerSubLoop03.json', 'w') as f:
+    with open('static/data/PowerSubLoop01.json', 'w') as f:
         json.dump(PowerPayload[0][0]["data"][0]["values"], f)
     f.close
-    
-    with open('static/data/PowerSubLoop04.json', 'w') as f:
+    with open('static/data/PowerSubLoop02.json', 'w') as f:
         json.dump(PowerPayload[1][0]["data"][0]["values"], f)
     f.close
-    
-    with open('static/data/PowerSubLoop05.json', 'w') as f:
+    with open('static/data/PowerSubLoop03.json', 'w') as f:
         json.dump(PowerPayload[2][0]["data"][0]["values"], f)
+    f.close
+    with open('static/data/PowerSubLoop04.json', 'w') as f:
+        json.dump(PowerPayload[3][0]["data"][0]["values"], f)
+    f.close
+    with open('static/data/PowerSubLoop05.json', 'w') as f:
+        json.dump(PowerPayload[4][0]["data"][0]["values"], f)
+    f.close
+    with open('static/data/PowerSubLoop06.json', 'w') as f:
+        json.dump(PowerPayload[5][0]["data"][0]["values"], f)
+    f.close
+    with open('static/data/PowerSubLoop07.json', 'w') as f:
+        json.dump(PowerPayload[6][0]["data"][0]["values"], f)
+    f.close
+    with open('static/data/PowerSubLoop08.json', 'w') as f:
+        json.dump(PowerPayload[7][0]["data"][0]["values"], f)
+    f.close
+    with open('static/data/PowerSubLoop09.json', 'w') as f:
+        json.dump(PowerPayload[8][0]["data"][0]["values"], f)
+    f.close
+    with open('static/data/PowerSubLoop10.json', 'w') as f:
+        json.dump(PowerPayload[9][0]["data"][0]["values"], f)
+    f.close
+    with open('static/data/PowerSubLoop11.json', 'w') as f:
+        json.dump(PowerPayload[10][0]["data"][0]["values"], f)
+    f.close
+    with open('static/data/PowerSubLoop12.json', 'w') as f:
+        json.dump(PowerPayload[11][0]["data"][0]["values"], f)
+    f.close
+    with open('static/data/PowerSubLoop13.json', 'w') as f:
+        json.dump(PowerPayload[12][0]["data"][0]["values"], f)
+    f.close
+    with open('static/data/PowerSubLoop14.json', 'w') as f:
+        json.dump(PowerPayload[13][0]["data"][0]["values"], f)
     f.close
     
     return PowerPayload
 
+def getPowerMainLoop01(HOST_Addr, HOST_Port):
+    
+    PowerPayload = {}
+    clamp=[{"voltage":{}},{"voltage":{}}]
+    try:
+        master = modbus_tcp.TcpMaster(host=HOST_Addr,port=HOST_Port)
+        master.set_timeout(5.0)
+        clamp_data = master.execute(1, cst.READ_HOLDING_REGISTERS, 673, 47)
+        #print (clamp_data)
+        '''
+        for i in range(27):
+            clamp32[i] = ReadFloat((clamp_data[i*2+1], clamp_data[i*2]))
+        '''
+        for i in range(1):
+            clamp[i]["voltage"]=round(clamp_data[0])
+            clamp[i]["current_r"]=round(clamp_data[14])
+            clamp[i]["current_r"]=round(clamp_data[26])
+            clamp[i]["current_r"]=round(clamp_data[38])
+            clamp[i]["temperature_r"]=round(clamp_data[22])
+            clamp[i]["temperature_s"]=round(clamp_data[34])
+            clamp[i]["temperature_t"]=round(clamp_data[46])
+            clamp[i]["battery_r"]=2
+            clamp[i]["battery_s"]=2
+            clamp[i]["battery_t"]=2
+            clamp[i]["power"]= round(clamp_data[2])
+            clamp[i]["pf"]= round(clamp_data[6])
+            clamp[i]["alive"]= 1
+            clamp[i]["energy"]= round(clamp_data[4])
+            
+            
+    except:
+        j = 20
+        for i in range(1):
+            clamp[i]["voltage"]=j
+            clamp[i]["current_r"]=j
+            clamp[i]["current_s"]=j
+            clamp[i]["current_t"]=j
+            clamp[i]["temperature_r"]=j
+            clamp[i]["temperature_s"]=j
+            clamp[i]["temperature_t"]=j
+            clamp[i]["battery_r"]=j
+            clamp[i]["battery_s"]=j
+            clamp[i]["battery_t"]=j
+            clamp[i]["power"]= j
+            clamp[i]["pf"]= j
+            clamp[i]["alive"]= 2
+            clamp[i]["energy"]= j
+    with open('static/data/mainloopname.json', 'r') as f:
+        loop_name = json.load(f)
+    f.close
+    
+    clamp[0]["Loop_name"] = loop_name["loop01"]
+    
+    with open('static/data/mainlooptoken.json', 'r') as f:
+        loop_token = json.load(f)
+    f.close
+    
+    
+    PowerPayload[0] = [{"access_token": loop_token["loop01"],
+             "app": "ems_demo_fet",
+             "type": "3P3WMETER",
+             "data": [{"values":clamp[0]}]}]
+
+    
+    with open('static/data/PowerMainLoop01.json', 'w') as f:
+        json.dump(PowerPayload[0][0]["data"][0]["values"], f)
+    f.close
+    
+    return PowerPayload
+'''
 def getPowerLoop02(HOST_Addr, HOST_Port, voltage, pf):
     
     clamp32 = {}
@@ -261,44 +410,7 @@ def power_count():
     with open('static/data/PowerLoop02.json', 'w') as g:
         json.dump(power_kwh02, g)
     g.close
-    
+'''    
     
 if __name__ == '__main__':
-    
-    power_kwh01 = {}
-    power_kwh02 = {}
-    powermeter01 = (getPowerLoop01('192.168.1.10',502,380,0.9))
-    print (powermeter01[0][0]["data"][0]["values"]["power"])
-    print (powermeter01[1][0]["data"][0]["values"]["power"])
-    print (powermeter01[2][0]["data"][0]["values"]["power"])
-    
-    with open('static/data/PowerLoop01.json', 'r') as f:
-        power_kwh01 = json.load(f)
-    f.close
-    power_kwh01["power03_kwh"]=power_kwh01["power03_kwh"] + (powermeter01[0][0]["data"][0]["values"]["power"]/60)
-    power_kwh01["power04_kwh"]=power_kwh01["power04_kwh"] + (powermeter01[1][0]["data"][0]["values"]["power"]/60)
-    power_kwh01["power05_kwh"]=power_kwh01["power05_kwh"] + (powermeter01[2][0]["data"][0]["values"]["power"]/60)
-    with open('static/data/PowerLoop01.json', 'w') as g:
-        json.dump(power_kwh01, g)
-    g.close
-    print (power_kwh01["power03_kwh"])
-    print (power_kwh01["power04_kwh"])
-    print (power_kwh01["power05_kwh"])
-    
-    time.sleep(2)
-    powermeter02 = (getPowerLoop02('192.168.1.11',502,380,0.9))
-    print (powermeter02[0][0]["data"][0]["values"]["power"])
-    print (powermeter02[1][0]["data"][0]["values"]["power"])
-    print (powermeter02[2][0]["data"][0]["values"]["power"])
-    with open('static/data/PowerLoop02.json', 'r') as f:
-        power_kwh02 = json.load(f)
-    f.close
-    power_kwh02["power06_kwh"]=power_kwh02["power06_kwh"] + (powermeter02[0][0]["data"][0]["values"]["power"]/60)
-    power_kwh02["power07_kwh"]=power_kwh02["power07_kwh"] + (powermeter02[1][0]["data"][0]["values"]["power"]/60)
-    power_kwh02["power08_kwh"]=power_kwh02["power08_kwh"] + (powermeter02[2][0]["data"][0]["values"]["power"]/60)
-    with open('static/data/PowerLoop02.json', 'w') as g:
-        json.dump(power_kwh02, g)
-    g.close
-    print (power_kwh02["power06_kwh"])
-    print (power_kwh02["power07_kwh"])
-    print (power_kwh02["power08_kwh"])
+    getPowerLoop01('192.168.1.10',502)
