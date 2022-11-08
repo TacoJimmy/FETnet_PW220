@@ -89,12 +89,19 @@ def MqttACSend(mod_payload):
 
 '''
 def MqttPublish():
-    SubLoop01 = FET_modbustcp.getPowerLoop01('192.168.1.10',502)
+    SubLoop01 = FET_modbustcp.getPowerLoop01('192.168.1.51',1502)
+    print(SubLoop01)
+    print("01_ok")
     MqttSend(SubLoop01,14)
-    MainLoop01 = FET_modbustcp.getPowerMainLoop01('192.168.1.10', 502)
+    print("02_ok")
+    MainLoop01 = FET_modbustcp.getPowerMainLoop01('192.168.1.51', 1502)
+    print("03_ok")
     MqttSend(MainLoop01,1)
+    print("04_ok")
     MainLoop = IPC_Loop01()
+    print("05_ok")
     MqttSend(MainLoop,1)
+    print("06_ok")
 
 def IPC_Loop01():
     PowerPayload ={}
@@ -153,6 +160,10 @@ def IPC_Loop01():
             mainpower01 = json.load(b)
         b.close
         
+        with open('static/data/power_dm.json', 'r') as b:
+            powerdm = json.load(b)
+        b.close
+        
         CT_Power = subpower01["power"]+subpower02["power"]+subpower03["power"]+subpower07["power"]
         CHP_Power = subpower04["power"]+subpower05["power"]+subpower06["power"]+subpower08["power"]+subpower09["power"]
         CWP_Power = subpower10["power"]+subpower11["power"]+subpower12["power"]+subpower13["power"]+subpower14["power"]
@@ -162,6 +173,8 @@ def IPC_Loop01():
         CWP_energy = subpower10["energy"]+subpower11["energy"]+subpower12["energy"]+subpower13["energy"]+subpower14["energy"]
         
         clamp[0]["power"] = mainpower01["power"]
+        clamp[0]["energy"] = mainpower01["energy"]
+        clamp[0]["power_dm"] = powerdm["power_dm"]
         clamp[0]["CT_Power"] = CT_Power
         clamp[0]["CT_energy"] = CT_energy
         clamp[0]["CT_Power_p"] = round(CT_Power / mainpower01["power"],1)
@@ -221,7 +234,10 @@ def Pub_infor():
    
 if __name__ == '__main__':
     while True:
-        #PowerLoop()
+        SubLoop01 = FET_modbustcp.getPowerLoop01('192.168.1.51',1502)
+        print(SubLoop01)
+        print("01_ok")
+        '''
         PowerPayload ={}
         clamp=[{"voltage":{}},{"voltage":{}},{"voltage":{}},
            {"voltage":{}},{"voltage":{}},{"voltage":{}},
@@ -241,3 +257,4 @@ if __name__ == '__main__':
         clamp[0]["power_loop01_p"] = round(subpower01["power"] / mainpower01["power"]*100,1)
         print (clamp[0])
         time.sleep(10)
+        '''
