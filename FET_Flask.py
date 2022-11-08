@@ -27,7 +27,9 @@ class Config(object):
             'func': '__main__:read_com1',
             'args': (1, 2),   
             'trigger': 'interval',
-            'seconds': 15 
+            'minutes': 15
+            #'seconds': 15 
+            
         }
     ]
     SCHEDULER_API_ENABLED = True
@@ -281,7 +283,7 @@ def publish_PowerMeter(a, b):
     
 def read_com1(a, b):
     
-    energy_now = FET_modbustcp.GetPowerEnergy('192.168.1.10',502)
+    energy_now = FET_modbustcp.GetPowerEnergy('192.168.1.51',1502)
     
     with open('static/data/power_dm.json', 'r') as f:
         power_energy_last = json.load(f)
@@ -303,7 +305,7 @@ if __name__ == '__main__':
     scheduler.start()
     
     live_server = Server(app.wsgi_app)
-    #live_server.watch('static/*.stylus', 'make static')
+    live_server.watch('static/*.stylus', 'make static')
     live_server.serve(open_url=False, open_url_delay=None, live_css=False, host='0.0.0.0', debug=None, restart_delay=100)
     
     
