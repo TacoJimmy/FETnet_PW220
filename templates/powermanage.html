@@ -160,9 +160,21 @@
                     type: 'GET',
                     success: function (data) {
                         $IPCData.text("");
-                        $IPCData.append("power[kW] : " + data.Main_Power + "<br>");
-						$IPCData.append("DM[W] : " + data.dm + "<br>");
-                        
+                        $IPCData.append("power[kW] : " + data.power + "<br>");
+						$IPCData.append("energy[kwh] : " + data.energy + "<br>");
+						$IPCData.append("DM[W] : " + data.power_dm + "<br>");
+						$IPCData.append("CT_Power[kW] : " + data.CT_Power + "<br>");
+						$IPCData.append("CT_energy[kWh] : " + data.CT_energy + "<br>");
+						$IPCData.append("CT_Power_p[%] : " + data.CT_Power_p + "<br>");
+						$IPCData.append("CHP_Power[kW] : " + data.CHP_Power + "<br>");
+						$IPCData.append("CHP_energy[kWh] : " + data.CHP_energy + "<br>");
+						$IPCData.append("CHP_Power_p[%] : " + data.CHP_Power_p + "<br>");
+						$IPCData.append("CWP_Power[kW] : " + data.CWP_Power + "<br>");
+						$IPCData.append("CWP_energy[kWh] : " + data.CWP_energy + "<br>");
+						$IPCData.append("CWP_Power_p%] : " + data.CWP_Power_p + "<br>");
+						
+
+						
                     },
                     error: function (xhr) {
                         alert('Ajax request 發生錯誤');
@@ -191,7 +203,8 @@
                         $PowerMainLoop01.append("battery_t : " + data.battery_t + "<br>");
                         $PowerMainLoop01.append("power[kW] : " + data.power + "<br>");
                         $PowerMainLoop01.append("pf[%] : " + data.pf + "<br>");
-						$PowerMainLoop01.append("DM[W] : " + data.dm + "<br>");
+						$PowerMainLoop01.append("DM[W] : " + data.power_dm + "<br>");
+						$PowerMainLoop01.append("energy[kwh] : " + data.energy + "<br>");
                         
                     },
                     error: function (xhr) {
@@ -220,6 +233,7 @@
                         $PowerMainLoop02.append("power[kW] : " + data.power + "<br>");
                         $PowerMainLoop02.append("pf[%] : " + data.pf + "<br>");
 						$PowerMainLoop02.append("DM[W] : " + data.dm + "<br>");
+						$PowerMainLoop02.append("energy[kwh] : " + data.energy + "<br>");
                         
                     },
                     error: function (xhr) {
@@ -460,6 +474,7 @@
                     type: 'GET',
                     success: function (data) {
                         $PowerSubLoop09.text("");
+						$PowerSubLoop09.append("Name : " + data.Loop_name + "<br>");
                         $PowerSubLoop09.append("Voltage[V] : " + data.voltage + "<br>");
                         $PowerSubLoop09.append("current_r[A] : " + data.current_r + "<br>");
                         $PowerSubLoop09.append("current_s[A] : " + data.current_s + "<br>");
@@ -487,6 +502,7 @@
                     type: 'GET',
                     success: function (data) {
                         $PowerSubLoop10.text("");
+						$PowerSubLoop10.append("Name : " + data.Loop_name + "<br>");
                         $PowerSubLoop10.append("Voltage[V] : " + data.voltage + "<br>");
                         $PowerSubLoop10.append("current_r[A] : " + data.current_r + "<br>");
                         $PowerSubLoop10.append("current_s[A] : " + data.current_s + "<br>");
@@ -514,6 +530,7 @@
                     type: 'GET',
                     success: function (data) {
                         $PowerSubLoop11.text("");
+						$PowerSubLoop11.append("Name : " + data.Loop_name + "<br>");
                         $PowerSubLoop11.append("Voltage[V] : " + data.voltage + "<br>");
                         $PowerSubLoop11.append("current_r[A] : " + data.current_r + "<br>");
                         $PowerSubLoop11.append("current_s[A] : " + data.current_s + "<br>");
@@ -541,6 +558,7 @@
                     type: 'GET',
                     success: function (data) {
                         $PowerSubLoop12.text("");
+						$PowerSubLoop12.append("Name : " + data.Loop_name + "<br>");
                         $PowerSubLoop12.append("Voltage[V] : " + data.voltage + "<br>");
                         $PowerSubLoop12.append("current_r[A] : " + data.current_r + "<br>");
                         $PowerSubLoop12.append("current_s[A] : " + data.current_s + "<br>");
@@ -568,6 +586,7 @@
                     type: 'GET',
                     success: function (data) {
                         $PowerSubLoop13.text("");
+						$PowerSubLoop13.append("Name : " + data.Loop_name + "<br>");
                         $PowerSubLoop13.append("Voltage[V] : " + data.voltage + "<br>");
                         $PowerSubLoop13.append("current_r[A] : " + data.current_r + "<br>");
                         $PowerSubLoop13.append("current_s[A] : " + data.current_s + "<br>");
@@ -595,6 +614,7 @@
                     type: 'GET',
                     success: function (data) {
                         $PowerSubLoop14.text("");
+						$PowerSubLoop14.append("Name : " + data.Loop_name + "<br>");
                         $PowerSubLoop14.append("Voltage[V] : " + data.voltage + "<br>");
                         $PowerSubLoop14.append("current_r[A] : " + data.current_r + "<br>");
                         $PowerSubLoop14.append("current_s[A] : " + data.current_s + "<br>");
