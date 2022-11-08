@@ -59,8 +59,8 @@ def getPowerLoop01(HOST_Addr, HOST_Port):
         for i in range(14):
             clamp[i]["voltage"]=round(data[i][0])
             clamp[i]["current_r"]=round(data[i][7])
-            clamp[i]["current_r"]=round(data[i][13])
-            clamp[i]["current_r"]=round(data[i][19])
+            clamp[i]["current_s"]=round(data[i][13])
+            clamp[i]["current_t"]=round(data[i][19])
             clamp[i]["temperature_r"]=round(data[i][11])
             clamp[i]["temperature_s"]=round(data[i][17])
             clamp[i]["temperature_t"]=round(data[i][23])
@@ -89,6 +89,8 @@ def getPowerLoop01(HOST_Addr, HOST_Port):
             clamp[i]["pf"]= i
             clamp[i]["alive"]= 2
             clamp[i]["energy"]= i
+            
+            print ("error_"+str(i))
     with open('static/data/loopname.json', 'r') as f:
         loop_name = json.load(f)
     f.close
@@ -213,6 +215,8 @@ def getPowerLoop01(HOST_Addr, HOST_Port):
         json.dump(PowerPayload[13][0]["data"][0]["values"], f)
     f.close
     
+    print (PowerPayload[3][0]["data"][0]["values"]["current_s"])
+    
     return PowerPayload
 
 
@@ -220,8 +224,10 @@ def GetPowerEnergy(HOST_Addr, HOST_Port):
     
     master = modbus_tcp.TcpMaster(host=HOST_Addr,port=HOST_Port)
     master.set_timeout(5.0)
-    clamp_data = master.execute(1, cst.READ_HOLDING_REGISTERS, 681, 1)
-    power_engergy = clamp_data[0]
+    clamp_data = master.execute(1, cst.READ_HOLDING_REGISTERS, 680, 2)
+    
+    
+    power_engergy = ReadFloat((clamp_data[0],clamp_data[1]))
             
     return power_engergy
 
@@ -247,8 +253,8 @@ def getPowerMainLoop01(HOST_Addr, HOST_Port):
         for i in range(1):
             clamp[i]["voltage"]=round(data[i][0])
             clamp[i]["current_r"]=round(data[i][7])
-            clamp[i]["current_r"]=round(data[i][13])
-            clamp[i]["current_r"]=round(data[i][19])
+            clamp[i]["current_s"]=round(data[i][13])
+            clamp[i]["current_t"]=round(data[i][19])
             clamp[i]["temperature_r"]="NA"
             clamp[i]["temperature_s"]="NA"
             clamp[i]["temperature_t"]="NA"
@@ -468,3 +474,4 @@ if __name__ == '__main__':
     #print (getmodbustcp('192.168.1.51',1502))
     print (getPowerLoop01('192.168.1.51',1502))
     print (getPowerMainLoop01('192.168.1.51',1502))
+    print (GetPowerEnergy('192.168.1.51',1502))
