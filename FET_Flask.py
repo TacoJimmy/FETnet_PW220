@@ -322,6 +322,110 @@ def save_data(a, b):
         writer.writerow(subpower01)
     csvfile.close
     
+    with open('static/data/PowerSubLoop02.json', 'r') as a:
+        subpower02 = json.load(a)
+    a.close
+    with open("/media/mmcblk0p1/"+time.strftime("%Y-%m-%d")+"-SubLoop02.csv", "a", newline="")as csvfile:
+        writer = csv.writer(csvfile)
+        writer.writerow(subpower02)
+    csvfile.close
+
+    with open('static/data/PowerSubLoop03.json', 'r') as a:
+        subpower03 = json.load(a)
+    a.close
+    with open("/media/mmcblk0p1/"+time.strftime("%Y-%m-%d")+"-SubLoop03.csv", "a", newline="")as csvfile:
+        writer = csv.writer(csvfile)
+        writer.writerow(subpower03)
+    csvfile.close
+
+    with open('static/data/PowerSubLoop04.json', 'r') as a:
+        subpower04 = json.load(a)
+    a.close
+    with open("/media/mmcblk0p1/"+time.strftime("%Y-%m-%d")+"-SubLoop04.csv", "a", newline="")as csvfile:
+        writer = csv.writer(csvfile)
+        writer.writerow(subpower04)
+    csvfile.close
+
+    with open('static/data/PowerSubLoop05.json', 'r') as a:
+        subpower05 = json.load(a)
+    a.close
+    with open("/media/mmcblk0p1/"+time.strftime("%Y-%m-%d")+"-SubLoop05.csv", "a", newline="")as csvfile:
+        writer = csv.writer(csvfile)
+        writer.writerow(subpower05)
+    csvfile.close
+
+    with open('static/data/PowerSubLoop06.json', 'r') as a:
+        subpower06 = json.load(a)
+    a.close
+    with open("/media/mmcblk0p1/"+time.strftime("%Y-%m-%d")+"-SubLoop06.csv", "a", newline="")as csvfile:
+        writer = csv.writer(csvfile)
+        writer.writerow(subpower06)
+    csvfile.close
+
+    with open('static/data/PowerSubLoop07.json', 'r') as a:
+        subpower07 = json.load(a)
+    a.close
+    with open("/media/mmcblk0p1/"+time.strftime("%Y-%m-%d")+"-SubLoop07.csv", "a", newline="")as csvfile:
+        writer = csv.writer(csvfile)
+        writer.writerow(subpower07)
+    csvfile.close
+
+    with open('static/data/PowerSubLoop08.json', 'r') as a:
+        subpower08 = json.load(a)
+    a.close
+    with open("/media/mmcblk0p1/"+time.strftime("%Y-%m-%d")+"-SubLoop08.csv", "a", newline="")as csvfile:
+        writer = csv.writer(csvfile)
+        writer.writerow(subpower08)
+    csvfile.close
+
+    with open('static/data/PowerSubLoop09.json', 'r') as a:
+        subpower09 = json.load(a)
+    a.close
+    with open("/media/mmcblk0p1/"+time.strftime("%Y-%m-%d")+"-SubLoop09.csv", "a", newline="")as csvfile:
+        writer = csv.writer(csvfile)
+        writer.writerow(subpower09)
+    csvfile.close
+
+    with open('static/data/PowerSubLoop10.json', 'r') as a:
+        subpower10 = json.load(a)
+    a.close
+    with open("/media/mmcblk0p1/"+time.strftime("%Y-%m-%d")+"-SubLoop10.csv", "a", newline="")as csvfile:
+        writer = csv.writer(csvfile)
+        writer.writerow(subpower10)
+    csvfile.close
+
+    with open('static/data/PowerSubLoop11.json', 'r') as a:
+        subpower11 = json.load(a)
+    a.close
+    with open("/media/mmcblk0p1/"+time.strftime("%Y-%m-%d")+"-SubLoop11.csv", "a", newline="")as csvfile:
+        writer = csv.writer(csvfile)
+        writer.writerow(subpower11)
+    csvfile.close
+
+    with open('static/data/PowerSubLoop12.json', 'r') as a:
+        subpower12 = json.load(a)
+    a.close
+    with open("/media/mmcblk0p1/"+time.strftime("%Y-%m-%d")+"-SubLoop12.csv", "a", newline="")as csvfile:
+        writer = csv.writer(csvfile)
+        writer.writerow(subpower12)
+    csvfile.close
+
+    with open('static/data/PowerSubLoop13.json', 'r') as a:
+        subpower13 = json.load(a)
+    a.close
+    with open("/media/mmcblk0p1/"+time.strftime("%Y-%m-%d")+"-SubLoop13.csv", "a", newline="")as csvfile:
+        writer = csv.writer(csvfile)
+        writer.writerow(subpower13)
+    csvfile.close
+
+    with open('static/data/PowerSubLoop14.json', 'r') as a:
+        subpower14 = json.load(a)
+    a.close
+    with open("/media/mmcblk0p1/"+time.strftime("%Y-%m-%d")+"-SubLoop14.csv", "a", newline="")as csvfile:
+        writer = csv.writer(csvfile)
+        writer.writerow(subpower14)
+    csvfile.close
+
 
 if __name__ == '__main__':
     
