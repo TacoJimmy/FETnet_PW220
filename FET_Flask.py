@@ -8,6 +8,11 @@ from flask_apscheduler import APScheduler
 import FET_MQTT
 import FET_modbustcp
 from livereload import Server
+import time
+import csv
+
+
+
 app = Flask(__name__)
 
 
@@ -29,6 +34,15 @@ class Config(object):
             'trigger': 'interval',
             'minutes': 15
             #'seconds': 15 
+            
+        },
+        {
+            'id': 'save_data',  
+            'func': '__main__:save_data',
+            'args': (1, 2),   
+            'trigger': 'interval',
+            'minutes': 5
+            
             
         }
     ]
@@ -297,6 +311,18 @@ def read_com1(a, b):
     f.close
 
     return Payload
+
+def save_data(a, b):
+
+    with open('static/data/PowerSubLoop01.json', 'r') as a:
+        subpower01 = json.load(a)
+    a.close
+    with open("/media/mmcblk0p1/"+time.strftime("%Y-%m-%d")+"-SubLoop01.csv", "a", newline="")as csvfile:
+        writer = csv.writer(csvfile)
+        writer.writerow(subpower01)
+    csvfile.close
+    
+
 if __name__ == '__main__':
     
     app.config.from_object(Config())
