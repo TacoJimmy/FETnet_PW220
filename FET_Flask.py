@@ -320,12 +320,12 @@ def save_data(a, b):
         subpower01["datatime"] = str(datatime)
     a.close
     with open("/media/mmcblk0p1/"+time.strftime("%Y-%m-%d")+"-SubLoop01.json", "a", newline="")as csvfile:
-        csv.dump(subpower01, csvfile)
+        json.dump(subpower01, csvfile)
     csvfile.close
     
     with open('static/data/PowerSubLoop02.json', 'r') as a:
         subpower02 = json.load(a)
-        csv.dump(subpower02, csvfile)
+        json.dump(subpower02, csvfile)
     a.close
     with open("/media/mmcblk0p1/"+time.strftime("%Y-%m-%d")+"-SubLoop02.json", "a", newline="")as csvfile:
         csv.dump(subpower02, csvfile)
@@ -336,7 +336,7 @@ def save_data(a, b):
         subpower03["datatime"] = str(datatime)
     a.close
     with open("/media/mmcblk0p1/"+time.strftime("%Y-%m-%d")+"-SubLoop03.json", "a", newline="")as csvfile:
-        csv.dump(subpower03, csvfile)
+        json.dump(subpower03, csvfile)
     csvfile.close
 
     with open('static/data/PowerSubLoop04.json', 'r') as a:
@@ -344,7 +344,7 @@ def save_data(a, b):
         subpower04["datatime"] = str(datatime)
     a.close
     with open("/media/mmcblk0p1/"+time.strftime("%Y-%m-%d")+"-SubLoop04.json", "a", newline="")as csvfile:
-        csv.dump(subpower04, csvfile)
+        json.dump(subpower04, csvfile)
     csvfile.close
 
     with open('static/data/PowerSubLoop05.json', 'r') as a:
@@ -352,7 +352,7 @@ def save_data(a, b):
         subpower05["datatime"] = str(datatime)
     a.close
     with open("/media/mmcblk0p1/"+time.strftime("%Y-%m-%d")+"-SubLoop05.json", "a", newline="")as csvfile:
-        csv.dump(subpower05, csvfile)
+        json.dump(subpower05, csvfile)
     csvfile.close
 
     with open('static/data/PowerSubLoop06.json', 'r') as a:
@@ -360,7 +360,7 @@ def save_data(a, b):
         subpower06["datatime"] = str(datatime)
     a.close
     with open("/media/mmcblk0p1/"+time.strftime("%Y-%m-%d")+"-SubLoop06.json", "a", newline="")as csvfile:
-        csv.dump(subpower06, csvfile)
+        json.dump(subpower06, csvfile)
     csvfile.close
 
     with open('static/data/PowerSubLoop07.json', 'r') as a:
@@ -368,7 +368,7 @@ def save_data(a, b):
         subpower07["datatime"] = str(datatime)
     a.close
     with open("/media/mmcblk0p1/"+time.strftime("%Y-%m-%d")+"-SubLoop07.json", "a", newline="")as csvfile:
-        csv.dump(subpower07, csvfile)
+        json.dump(subpower07, csvfile)
     csvfile.close
 
     with open('static/data/PowerSubLoop08.json', 'r') as a:
@@ -376,7 +376,7 @@ def save_data(a, b):
         subpower08["datatime"] = str(datatime)
     a.close
     with open("/media/mmcblk0p1/"+time.strftime("%Y-%m-%d")+"-SubLoop08.json", "a", newline="")as csvfile:
-        csv.dump(subpower08, csvfile)
+        json.dump(subpower08, csvfile)
     csvfile.close
 
     with open('static/data/PowerSubLoop09.json', 'r') as a:
@@ -384,7 +384,7 @@ def save_data(a, b):
         subpower09["datatime"] = str(datatime)
     a.close
     with open("/media/mmcblk0p1/"+time.strftime("%Y-%m-%d")+"-SubLoop09.json", "a", newline="")as csvfile:
-        csv.dump(subpower09, csvfile)
+        json.dump(subpower09, csvfile)
     csvfile.close
 
     with open('static/data/PowerSubLoop10.json', 'r') as a:
@@ -392,7 +392,7 @@ def save_data(a, b):
         subpower10["datatime"] = str(datatime)
     a.close
     with open("/media/mmcblk0p1/"+time.strftime("%Y-%m-%d")+"-SubLoop10.json", "a", newline="")as csvfile:
-        csv.dump(subpower10, csvfile)
+        json.dump(subpower10, csvfile)
     csvfile.close
 
     with open('static/data/PowerSubLoop11.json', 'r') as a:
@@ -400,7 +400,7 @@ def save_data(a, b):
         subpower11["datatime"] = str(datatime)
     a.close
     with open("/media/mmcblk0p1/"+time.strftime("%Y-%m-%d")+"-SubLoop11.json", "a", newline="")as csvfile:
-        csv.dump(subpower11, csvfile)
+        json.dump(subpower11, csvfile)
     csvfile.close
 
     with open('static/data/PowerSubLoop12.json', 'r') as a:
@@ -408,7 +408,7 @@ def save_data(a, b):
         subpower12["datatime"] = str(datatime)
     a.close
     with open("/media/mmcblk0p1/"+time.strftime("%Y-%m-%d")+"-SubLoop12.json", "a", newline="")as csvfile:
-        csv.dump(subpower12, csvfile)
+        json.dump(subpower12, csvfile)
     csvfile.close
 
     with open('static/data/PowerSubLoop13.json', 'r') as a:
@@ -416,7 +416,7 @@ def save_data(a, b):
         subpower13["datatime"] = str(datatime)
     a.close
     with open("/media/mmcblk0p1/"+time.strftime("%Y-%m-%d")+"-SubLoop13.json", "a", newline="")as csvfile:
-        csv.dump(subpower13, csvfile)
+        json.dump(subpower13, csvfile)
     csvfile.close
 
     with open('static/data/PowerSubLoop14.json', 'r') as a:
@@ -424,7 +424,7 @@ def save_data(a, b):
         subpower14["datatime"] = str(datatime)
     a.close
     with open("/media/mmcblk0p1/"+time.strftime("%Y-%m-%d")+"-SubLoop14.json", "a", newline="")as csvfile:
-        csv.dump(subpower14, csvfile)
+        json.dump(subpower14, csvfile)
     csvfile.close
 
 
