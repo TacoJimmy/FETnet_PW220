@@ -319,7 +319,7 @@ def save_data(a, b):
         subpower01 = json.load(a)
         subpower01["datatime"] = str(datatime)
     a.close
-    with open("/media/mmcblk0p1/"+time.strftime("%Y-%m-%d")+"-SubLoop01.csv", "a", newline="")as csvfile:
+    with open("/media/mmcblk0p1/"+time.strftime("%Y-%m-%d")+"-SubLoop01.json", "a", newline="")as csvfile:
         csv.dump(subpower01, csvfile)
     csvfile.close
     
@@ -437,6 +437,6 @@ if __name__ == '__main__':
     
     live_server = Server(app.wsgi_app)
     live_server.watch('static/*.stylus', 'make static')
-    live_server.serve(open_url=False, open_url_delay=None, live_css=False, host='0.0.0.0', debug=None, restart_delay=100)
+    live_server.serve(open_url=False, open_url_delay=None, live_css=False, host='192.168.1.110', debug=None, restart_delay=100)
     
     
