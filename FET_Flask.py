@@ -316,13 +316,12 @@ def save_data(a, b):
 
     datatime = time.strftime("%Y-%m-%d-%H:%M:%S")
     with open('static/data/PowerSubLoop01.json', 'r') as a:
-        #subpower01 = json.load(a)
-        subpower01 = a
+        subpower01 = json.load(a)
+        
         subpower01["datatime"] = str(datatime)
     a.close
     with open("/media/mmcblk0p1/"+time.strftime("%Y-%m-%d")+"-SubLoop01.csv", "a", newline="")as csvfile:
-        writer = csv.writer(csvfile)
-        writer.writerow(subpower01)
+        csv.dump(subpower01, csvfile)
     csvfile.close
     
     with open('static/data/PowerSubLoop02.json', 'r') as a:
