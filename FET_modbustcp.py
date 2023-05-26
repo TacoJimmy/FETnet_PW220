@@ -471,7 +471,7 @@ def power_count():
 '''    
     
 if __name__ == '__main__':
-    #print (getmodbustcp('192.168.1.51',1502))
-    print (getPowerLoop01('192.168.1.51',1502))
-    print (getPowerMainLoop01('192.168.1.51',1502))
-    print (GetPowerEnergy('192.168.1.51',1502))
+    #print (getmodbustcp('192.5.1.120',502))
+    print (getPowerLoop01('192.5.1.120',502))
+    print (getPowerMainLoop01('192.5.1.120',502))
+    print (GetPowerEnergy('192.5.1.120',502))
