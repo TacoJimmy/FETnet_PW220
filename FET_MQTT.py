@@ -89,12 +89,12 @@ def MqttACSend(mod_payload):
 
 '''
 def MqttPublish():
-    SubLoop01 = FET_modbustcp.getPowerLoop01('192.168.1.51',1502)
+    SubLoop01 = FET_modbustcp.getPowerLoop01('192.5.1.120',502)
     print(SubLoop01)
     print("01_ok")
     MqttSend(SubLoop01,14)
     print("02_ok")
-    MainLoop01 = FET_modbustcp.getPowerMainLoop01('192.168.1.51', 1502)
+    MainLoop01 = FET_modbustcp.getPowerMainLoop01('192.5.1.120', 502)
     print("03_ok")
     MqttSend(MainLoop01,1)
     print("04_ok")
@@ -234,7 +234,7 @@ def Pub_infor():
    
 if __name__ == '__main__':
     while True:
-        SubLoop01 = FET_modbustcp.getPowerLoop01('192.168.1.51',1502)
+        SubLoop01 = FET_modbustcp.getPowerLoop01('192.5.1.120',502)
         print(SubLoop01)
         print("01_ok")
         '''
