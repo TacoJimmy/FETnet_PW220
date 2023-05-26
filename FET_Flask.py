@@ -297,7 +297,7 @@ def publish_PowerMeter(a, b):
     
 def read_com1(a, b):
     
-    energy_now = FET_modbustcp.GetPowerEnergy('192.168.1.51',1502)
+    energy_now = FET_modbustcp.GetPowerEnergy('192.5.1.120',502)
     
     with open('static/data/power_dm.json', 'r') as f:
         power_energy_last = json.load(f)
