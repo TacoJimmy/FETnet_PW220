@@ -18,6 +18,11 @@ def ReadMqttInfor():
         data = json.load(f)
     f.close
     return data
+def ReadMqttInfor():
+    with open('static/data/mqttinfor2.json', 'r') as f:
+        data = json.load(f)
+    f.close
+    return data
 
 def MqttSend(mod_payload,loop):
     Mqttinfor = ReadMqttInfor()
@@ -38,6 +43,34 @@ def MqttSend(mod_payload,loop):
         client.loop_stop()
         client.disconnect()
         time.sleep(1)
+
+        
+    except:
+        print ('error')
+        return ('error')
+    
+
+def MqttSend2(mod_payload,loop):
+    Mqttinfor = ReadMqttInfor()
+    try:
+        client2 = mqtt.Client('', True, None, mqtt.MQTTv31)
+        client2.username_pw_set(Mqttinfor['appInfo']['MQTT_UserName'], Mqttinfor['appInfo']['MQTT_Password'])
+        context = ssl.SSLContext(ssl.PROTOCOL_TLSv1_2)
+        client2.tls_set_context(context)
+        client2.connect(Mqttinfor['appInfo']['MQTT_url'], Mqttinfor['appInfo']['MQTT_Port'], 60)
+        client2.loop_start()
+        time.sleep(1)
+        client2.on_connect
+        
+        for i in range(loop):
+            data03 = client2.publish(Mqttinfor['appInfo']['MQTT_topic'],json.dumps(mod_payload[i]))
+        time.sleep(1)
+        
+        client2.loop_stop()
+        client2.disconnect()
+        time.sleep(1)
+
+        
     except:
         print ('error')
         return ('error')
@@ -93,14 +126,17 @@ def MqttPublish():
     print(SubLoop01)
     print("01_ok")
     MqttSend(SubLoop01,14)
+    MqttSend2(SubLoop01,14)
     print("02_ok")
     MainLoop01 = FET_modbustcp.getPowerMainLoop01('192.5.1.120', 502)
     print("03_ok")
     MqttSend(MainLoop01,1)
+    MqttSend2(MainLoop01,1)
     print("04_ok")
     MainLoop = IPC_Loop01()
     print("05_ok")
     MqttSend(MainLoop,1)
+    MqttSend2(MainLoop,1)
     print("06_ok")
 
 def IPC_Loop01():
