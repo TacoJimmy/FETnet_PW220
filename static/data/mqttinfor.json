@@ -2,10 +2,10 @@
     "appInfo" : {     
         "MQTT_ClientID": "Infilink",
         "MQTT_UserName": "Infilink",
-        "MQTT_Password": "bfC36uA3",
+        "MQTT_Password": "3whDyeH9",
         "MQTT_topic": "/smartbuilding/v1/telemetry/nh220",
-		"MQTT_url": "mqtts1.fetnet.net",
-		"MQTT_Port": 8883,
+		"MQTT_url": "mqtt-device.fetiot3p1.fetnet.net",
+		"MQTT_Port": 8884,
 		"MQTT_SSL": "Yes"
     }
 }
