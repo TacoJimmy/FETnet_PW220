@@ -18,7 +18,7 @@ def ReadMqttInfor():
         data = json.load(f)
     f.close
     return data
-def ReadMqttInfor():
+def ReadMqttInfor2():
     with open('static/data/mqttinfor2.json', 'r') as f:
         data = json.load(f)
     f.close
@@ -51,7 +51,7 @@ def MqttSend(mod_payload,loop):
     
 
 def MqttSend2(mod_payload,loop):
-    Mqttinfor = ReadMqttInfor()
+    Mqttinfor = ReadMqttInfor2()
     try:
         client2 = mqtt.Client('', True, None, mqtt.MQTTv31)
         client2.username_pw_set(Mqttinfor['appInfo']['MQTT_UserName'], Mqttinfor['appInfo']['MQTT_Password'])
@@ -126,17 +126,17 @@ def MqttPublish():
     print(SubLoop01)
     print("01_ok")
     MqttSend(SubLoop01,14)
-    #MqttSend2(SubLoop01,14)
+    MqttSend2(SubLoop01,14)
     print("02_ok")
     MainLoop01 = FET_modbustcp.getPowerMainLoop01('192.5.1.120', 502)
     print("03_ok")
     MqttSend(MainLoop01,1)
-    #MqttSend2(MainLoop01,1)
+    MqttSend2(MainLoop01,1)
     print("04_ok")
     MainLoop = IPC_Loop01()
     print("05_ok")
     MqttSend(MainLoop,1)
-    #MqttSend2(MainLoop,1)
+    MqttSend2(MainLoop,1)
     print("06_ok")
 
 def IPC_Loop01():
