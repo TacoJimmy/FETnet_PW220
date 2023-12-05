@@ -38,7 +38,7 @@ def MqttSend(mod_payload,loop):
         for i in range(loop):
             data03 = client.publish("/smartbuilding/v1/telemetry/nh220",json.dumps(mod_payload[i]))
             time.sleep(3)
-        time.sleep(10)
+        #time.sleep(10)
         
         client.loop_stop()
         client.disconnect()
@@ -81,7 +81,7 @@ def MqttSend2(mod_payload,loop):
         for i in range(loop):
             data03 = client2.publish("/smartbuilding/v1/telemetry/nh220",json.dumps(mod_payload[i]))
             time.sleep(3)
-        time.sleep(10)
+        #time.sleep(10)
         
         client2.loop_stop()
         client2.disconnect()
