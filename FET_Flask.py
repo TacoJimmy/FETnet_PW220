@@ -25,7 +25,6 @@ class Config(object):
             'trigger': 'interval',
             'minutes': 2
             #'seconds': 10
-            
         },
         {
             'id': 'read_com1',  
