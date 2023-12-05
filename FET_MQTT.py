@@ -28,6 +28,23 @@ def MqttSend(mod_payload,loop):
     Mqttinfor = ReadMqttInfor()
     try:
         client = mqtt.Client('', True, None, mqtt.MQTTv31)
+        context = ssl.SSLContext(ssl.PROTOCOL_TLSv1_2)
+        client = mqtt.Client()
+        client.tls_set_context(context)
+        client.username_pw_set('infilink','fQdc44pz')
+        client.connect('mqtt-device.fetiot3s1.fetnet.net', 8884, 60)
+        client.loop_start()
+        time.sleep(1)
+        for i in range(loop):
+            data03 = client.publish("/smartbuilding/v1/telemetry/nh220",json.dumps(mod_payload[i]))
+            time.sleep(3)
+        time.sleep(10)
+        
+        client.loop_stop()
+        client.disconnect()
+        time.sleep(1)
+        '''
+        client = mqtt.Client('', True, None, mqtt.MQTTv31)
         client.username_pw_set(Mqttinfor['appInfo']['MQTT_UserName'], Mqttinfor['appInfo']['MQTT_Password'])
         context = ssl.SSLContext(ssl.PROTOCOL_TLSv1_2)
         client.tls_set_context(context)
@@ -43,7 +60,7 @@ def MqttSend(mod_payload,loop):
         client.loop_stop()
         client.disconnect()
         time.sleep(1)
-
+        '''
         
     except:
         print ('error')
@@ -53,6 +70,23 @@ def MqttSend(mod_payload,loop):
 def MqttSend2(mod_payload,loop):
     Mqttinfor = ReadMqttInfor2()
     try:
+        client2 = mqtt.Client('', True, None, mqtt.MQTTv31)
+        context2 = ssl.SSLContext(ssl.PROTOCOL_TLSv1_2)
+        client2 = mqtt.Client()
+        client2.tls_set_context(context2)
+        client2.username_pw_set('infilink','3whDyeH9')
+        client2.connect('mqtt-device.fetiot3p1.fetnet.net', 8884, 60)
+        client2.loop_start()
+        time.sleep(1)
+        for i in range(loop):
+            data03 = client2.publish("/smartbuilding/v1/telemetry/nh220",json.dumps(mod_payload[i]))
+            time.sleep(3)
+        time.sleep(10)
+        
+        client2.loop_stop()
+        client2.disconnect()
+        time.sleep(1)
+        '''
         client2 = mqtt.Client('', True, None, mqtt.MQTTv31)
         client2.username_pw_set(Mqttinfor['appInfo']['MQTT_UserName'], Mqttinfor['appInfo']['MQTT_Password'])
         context = ssl.SSLContext(ssl.PROTOCOL_TLSv1_2)
@@ -69,7 +103,7 @@ def MqttSend2(mod_payload,loop):
         client2.loop_stop()
         client2.disconnect()
         time.sleep(1)
-
+        '''
         
     except:
         print ('error')
