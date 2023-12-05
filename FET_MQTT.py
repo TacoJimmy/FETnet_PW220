@@ -63,7 +63,7 @@ def MqttSend(mod_payload,loop):
         '''
         
     except:
-        print ('error')
+        print ('error_MQTT')
         return ('error')
     
 
@@ -106,7 +106,7 @@ def MqttSend2(mod_payload,loop):
         '''
         
     except:
-        print ('error')
+        print ('error_MQTT')
         return ('error')
 '''
 def MqttMainSend(mod_payload):
